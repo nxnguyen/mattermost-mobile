@@ -22,6 +22,7 @@
     "@formatjs/intl-relativetimeformat": "12.3.5",
     "@gorhom/bottom-sheet": "5.2.13",
     "@gorhom/portal": "1.0.14",
+    "@hot-updater/react-native": "1.0.5",
     "@mattermost/calls": "github:mattermost/calls-common#bf5c7a25d43478b7949a45d4cbbdacac17705b59",
     "@mattermost/calls-native": "file:./libraries/@mattermost/calls-native",
     "@mattermost/compass-icons": "0.1.61",
@@ -120,6 +121,9 @@
     "@babel/preset-env": "7.29.5",
     "@babel/preset-typescript": "7.28.5",
     "@babel/runtime": "7.29.2",
+    "@expo/fingerprint": "0.16.7",
+    "@hot-updater/bare": "1.0.5",
+    "@hot-updater/standalone": "1.0.5",
     "@react-native/babel-preset": "0.83.9",
     "@react-native/eslint-config": "0.83.9",
     "@react-native/metro-config": "0.83.9",
@@ -153,6 +157,7 @@
     "eslint-plugin-jest": "29.15.2",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "7.1.1",
+    "hot-updater": "1.0.5",
     "husky": "9.1.7",
     "jest": "29.7.0",
     "jest-cli": "29.7.0",
@@ -210,7 +215,10 @@
     "test:coverage": "npm test -- --coverage",
     "test:watch": "npm test -- --watch",
     "tsc": "NODE_OPTIONS=--max_old_space_size=12000 tsc --noEmit",
-    "updatesnapshot": "NODE_OPTIONS=--max_old_space_size=12000 jest --updateSnapshot"
+    "updatesnapshot": "NODE_OPTIONS=--max_old_space_size=12000 jest --updateSnapshot",
+    "ota:fingerprint": "node scripts/sync-ota-native-metadata.mjs && hot-updater fingerprint create",
+    "ota:doctor": "node scripts/validate-ota-config.mjs && hot-updater doctor --server-base-url https://updates.152.42.230.207.sslip.io/hot-updater",
+    "ota:deploy:android": "node scripts/validate-ota-config.mjs && node scripts/generate-assets.js && node scripts/generate-compass-glyph-map.mjs && hot-updater deploy -p android"
   },
   "expo": {
     "autolinking": {

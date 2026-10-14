@@ -14,6 +14,8 @@ import com.facebook.react.bridge.UiThreadUtil
 import com.facebook.react.common.ReleaseLevel
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint
 import com.facebook.react.modules.network.OkHttpClientProvider
+import com.hotupdater.HotUpdater
+import com.hotupdater.HotUpdaterConfig
 import com.mattermost.networkclient.RCTOkHttpClientFactory
 import com.mattermost.networkclient.sessionattributes.SessionAttributes
 import com.mattermost.rnshare.ShareWorker
@@ -45,12 +47,21 @@ class MainApplication : Application(), ReactApplication, INotificationsApplicati
             packageList = PackageList(this).packages.apply {
                 add(WatermelonDBJSIPackage())
             },
-            jsMainModulePath = "index"
+            jsMainModulePath = "index",
+            jsBundleFilePath = if (BuildConfig.DEBUG && !BuildConfig.AMOBI_STANDALONE_DEBUG) {
+                null
+            } else {
+                HotUpdater.getJSBundleFile(applicationContext)
+            },
+            useDevSupport = BuildConfig.DEBUG && !BuildConfig.AMOBI_STANDALONE_DEBUG
         )
     }
 
     override fun onCreate() {
         super.onCreate()
+        if (BuildConfig.AMOBI_OTA_QA) {
+            HotUpdaterConfig.channel = "ota-qa"
+        }
 
         // Initialize Sentry early for native crash reporting
         RNSentrySDK.init(this)

@@ -22,6 +22,17 @@ process.env.EXPO_OS = 'ios';
 
 setGenerator(uuidv4);
 
+jest.mock('@hot-updater/react-native', () => ({
+    HotUpdater: {
+        init: jest.fn().mockReturnValue({
+            checkForUpdate: jest.fn().mockResolvedValue(null),
+            isUpdateDownloaded: jest.fn(() => false),
+            reload: jest.fn().mockResolvedValue(undefined),
+        }),
+    },
+    insights: jest.fn().mockReturnValue({id: 'insights'}),
+}));
+
 jest.mock('expo-application', () => {
     return {
         nativeApplicationVersion: '0.0.0',

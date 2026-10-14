@@ -6,6 +6,10 @@ server.PID
 mattermost.keystore
 tmp/
 .env
+.env.hotupdater
+.hot-updater/
+android/app/qa/
+ota/client.json
 env.d.ts
 *.apk
 *.aab
@@ -156,3 +160,5 @@ detox/maestro/.maestro-test-env*.bak
 # Maestro takeScreenshot output when a flow is run locally without
 # --test-output-dir; the name is the flow's own label, so match any of them.
 detox/maestro/*.png
+# hot-updater
+.hot-updater/output

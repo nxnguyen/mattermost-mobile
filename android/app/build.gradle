@@ -2,6 +2,15 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
+// A debug APK for a physical tester must also work when Metro is disconnected.
+def standaloneDebug = project.findProperty('amobiStandaloneDebug')?.toString()?.toBoolean() ?: false
+def otaQaBuild = project.findProperty('amobiQaBuild')?.toString()?.toBoolean() ?: false
+def releaseSigningProperties = [
+    'MATTERMOST_RELEASE_STORE_FILE',
+    'MATTERMOST_RELEASE_PASSWORD',
+    'MATTERMOST_RELEASE_KEY_ALIAS'
+]
+
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -22,6 +31,9 @@ apply plugin: "com.facebook.react"
     //   skip the bundling of the JS bundle and the assets. By default is just 'debug'.
     //   If you add flavors like lite, prod, etc. you'll have to list your debuggableVariants.
     // debuggableVariants = ["liteDebug", "prodDebug"]
+    if (standaloneDebug) {
+        debuggableVariants = []
+    }
     /* Bundling */
     //   A list containing the node command and its flags. Default is just 'node'.
     // nodeExecutableAndArgs = ["node"]
@@ -50,6 +62,46 @@ apply plugin: "com.facebook.react"
 
     /* Autolinking */
     autolinkLibrariesWithApp()
+}
+
+tasks.register('generateAmobiAssets', Exec) {
+    dependsOn('validateAmobiUpdater')
+    workingDir rootProject.projectDir.parentFile
+    commandLine 'node', 'scripts/generate-assets.js'
+}
+tasks.register('validateAmobiUpdater', Exec) {
+    workingDir rootProject.projectDir.parentFile
+    environment 'AMOBI_OTA_QA', otaQaBuild.toString()
+    commandLine 'node', 'scripts/validate-ota-config.mjs'
+}
+tasks.register('validateAmobiReleaseSigning') {
+    doLast {
+        // AGP skips its signing-validation task for an incomplete config.
+        // Require explicit inputs so assembleRelease cannot emit an unsigned APK.
+        def missingCredentials = releaseSigningProperties.any { propertyName ->
+            def value = project.findProperty(propertyName)
+            value == null || value.toString().isEmpty()
+        }
+        def signing = android.signingConfigs.release
+        if (missingCredentials || signing.storeFile == null ||
+            !signing.storeFile.isFile() || !signing.storePassword ||
+            !signing.keyAlias || !signing.keyPassword) {
+            throw new GradleException('Release builds require complete signing credentials and an existing keystore. Use the explicit unsigned variant for an unsigned artifact.')
+        }
+    }
+}
+tasks.register('generateAmobiCompassGlyphMap', Exec) {
+    dependsOn('generateAmobiAssets')
+    workingDir rootProject.projectDir.parentFile
+    commandLine 'node', 'scripts/generate-compass-glyph-map.mjs'
+}
+tasks.configureEach { task ->
+    if (task.name == 'preReleaseBuild') {
+        task.dependsOn('validateAmobiReleaseSigning')
+    }
+    if (task.name.startsWith('createBundle') && task.name.endsWith('JsAndAssets')) {
+        task.dependsOn('generateAmobiCompassGlyphMap')
+    }
 }
 
 if (System.getenv("SENTRY_ENABLED") == "true") {
@@ -118,6 +170,11 @@ android {
         testBuildType System.getProperty('testBuildType', 'debug')
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         buildConfigField "String", "REACT_NATIVE_RELEASE_LEVEL", "\"${findProperty('reactNativeReleaseLevel') ?: 'stable'}\""
+        buildConfigField "boolean", "AMOBI_STANDALONE_DEBUG", standaloneDebug.toString()
+        manifestPlaceholders += [
+            amobiAppLabel: otaQaBuild ? 'Amobi Collab OTA QA' : 'Amobi Collab'
+        ]
+        buildConfigField "boolean", "AMOBI_OTA_QA", otaQaBuild.toString()
 
         // Detox is included as a source subproject (see android/settings.gradle).
         // Its build.gradle declares product flavors `full` and `coreNative` on a
@@ -131,9 +188,9 @@ android {
         release {
             if (project.hasProperty('MATTERMOST_RELEASE_STORE_FILE')) {
                 storeFile file(MATTERMOST_RELEASE_STORE_FILE)
-                storePassword MATTERMOST_RELEASE_PASSWORD
-                keyAlias MATTERMOST_RELEASE_KEY_ALIAS
-                keyPassword MATTERMOST_RELEASE_PASSWORD
+                storePassword project.findProperty('MATTERMOST_RELEASE_PASSWORD')?.toString()
+                keyAlias project.findProperty('MATTERMOST_RELEASE_KEY_ALIAS')?.toString()
+                keyPassword project.findProperty('MATTERMOST_RELEASE_PASSWORD')?.toString()
             }
         }
         debug {
@@ -154,14 +211,15 @@ android {
     buildTypes {
         def useReleaseKey = project.hasProperty('MATTERMOST_RELEASE_STORE_FILE')
         release {
+            if (otaQaBuild) {
+                applicationIdSuffix '.otaqa'
+            }
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             proguardFile "${rootProject.projectDir}/../node_modules/detox/android/detox/proguard-rules-app.pro"
-            if (useReleaseKey) {
-                signingConfig signingConfigs.release
-            } else {
-                signingConfig signingConfigs.debug
-            }
+            // Missing credentials must fail validateAmobiReleaseSigning;
+            // never silently distribute a release signed with the debug key.
+            signingConfig signingConfigs.release
         }
         debug {
             if (useReleaseKey) {
@@ -280,3 +338,25 @@ tasks.register('copyDownloadableDepsToLibs', Copy) {
 }
 
 apply plugin: 'com.google.gms.google-services'
+
+if (otaQaBuild) {
+    def qaGoogleServicesFile = file('qa/google-services.json')
+    if (!qaGoogleServicesFile.isFile()) {
+        throw new GradleException('OTA QA Firebase configuration is missing')
+    }
+    def qaGoogleServices = new groovy.json.JsonSlurper().parse(qaGoogleServicesFile)
+    def qaApplicationId = "${android.defaultConfig.applicationId}.otaqa"
+    if (!qaGoogleServices.client.any { client ->
+        client.client_info?.android_client_info?.package_name == qaApplicationId
+    }) {
+        throw new GradleException('OTA QA Firebase configuration does not match its application ID')
+    }
+
+    // The Google Services plugin registers and sets its task inputs in onVariants.
+    // Configure the named task after that callback, before Gradle snapshots inputs.
+    androidComponents.onVariants(androidComponents.selector().withBuildType('release')) { variant ->
+        tasks.named("process${variant.name.capitalize()}GoogleServices", com.google.gms.googleservices.GoogleServicesTask).configure {
+            googleServicesJsonFiles.set([qaGoogleServicesFile])
+        }
+    }
+}

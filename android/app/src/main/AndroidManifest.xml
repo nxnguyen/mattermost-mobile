@@ -47,7 +47,7 @@
       android:allowBackup="false"
       android:dataExtractionRules="@xml/data_extraction_rules"
       android:fullBackupContent="false"
-      android:label="@string/app_name"
+      android:label="${amobiAppLabel}"
       android:icon="@mipmap/ic_launcher"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:theme="@style/AppTheme"
@@ -57,6 +57,7 @@
       android:usesCleartextTraffic="true"
     >
         <meta-data android:name="firebase_analytics_collection_deactivated" android:value="true" />
+        <meta-data android:name="com.hotupdater.CHANNEL" android:value="production" />
         <meta-data android:name="android.content.APP_RESTRICTIONS"
                    android:resource="@xml/app_restrictions" />
         <provider
@@ -130,5 +131,20 @@
         <!-- Opt out of react-native-nitro-bg-timer-plus foreground service -->
         <service android:name="com.margelo.nitro.backgroundtimer.NitroBackgroundTimerService" tools:node="remove" />
 
+        <meta-data android:name="com.hotupdater.PUBLIC_KEY" android:value="-----BEGIN PUBLIC KEY-----
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtBoGbeE+ykkJh5+7fSR2
+9vxQRYciQZivgMR14lyymz5ePHgsMXh65AfaRXnQguQOHq7jnfmQgE54bYUb0fCN
+fdO3XVwwMK6NQg808laceSEd4mohXYgdiZa9a/TPQheDxCetmMWu8k/lGYbyxnGA
+HFqqUuAfEDXm2UFx4WTQq9D23gvC1FUMbOP35QhQXi/lwTU5AOeaRFZL1vIJ9hs/
+mU5mw0o1mrzj7k2AnEnSgF5qIzW8uT3rFqTLbDRfijnNKORlFjhVfnIRJ+R04Jjm
+HirscQyVgxLkxT39GFEaDflEUhjWzuzcvO0FaNo2hs0VfaVgVFWw2IF5MKRo/W6S
+w6/cd0Qu4BAOEe13Pz6TH0WXAdbIgdFWALtKQ5nFntKv6mdirYPlWv6uzyuuPkfW
+ReZ4oVvfVGEwqWnPU1fGQXXbkpOcCseEY9JlYfb6V160nP5U2Zz4gHRyyfEhOQX1
+ZuCJ5hBDIi7P/tAvMCakgtRiSeNfO96fDPQof6buVlhPXJoTBB62JA9Y0HRc6F49
+9xSxKt1WWDL87FMpbT6CZM06retwO/huqma6BIycdL/i0ACt3vMDs5+XAcwadOk1
+D6S1Oj1x42EZEBocMhNuytUv7PxrhKIs//f6J87P60bqJus1H10/IQkXvlyYClNi
+76DOJt1fyKq8r5mIak6yymkCAwEAAQ==
+-----END PUBLIC KEY-----" />
+        <meta-data android:name="com.hotupdater.FINGERPRINT_HASH" android:value="57c8a503c3ba738b46d2fb738e210ba37776aa80" />
     </application>
 </manifest>

@@ -6,6 +6,7 @@ import {View} from 'react-native';
 
 import {changeOpacity, makeStyleSheetFromTheme} from '@utils/theme';
 
+import AppUpdates from './app_updates';
 import CustomStatus from './custom_status';
 import Logout from './logout';
 import Settings from './settings';
@@ -66,6 +67,7 @@ const AccountOptions = ({user, enableCustomUserStatuses, isTablet, theme}: Accou
             <View style={styles.group}>
                 <YourProfile isTablet={isTablet}/>
                 <Settings/>
+                <AppUpdates/>
             </View>
             <View style={styles.divider}/>
             <View style={styles.group}>

@@ -6,6 +6,9 @@ import {Text, View} from 'react-native';
 
 import ProfilePicture from '@components/profile_picture';
 import {makeStyleSheetFromTheme} from '@utils/theme';
+import {typography} from '@utils/typography';
+
+import {getAccountDisplayName} from './display_name';
 
 import type UserModel from '@typings/database/models/servers/user';
 
@@ -22,7 +25,7 @@ const getStyleSheet = makeStyleSheetFromTheme((theme: Theme) => {
             paddingBottom: 20,
             top: 0,
             paddingTop: 22,
-            paddingLeft: 20,
+            paddingHorizontal: 20,
         },
         statusStyle: {
             right: 10,
@@ -31,17 +34,13 @@ const getStyleSheet = makeStyleSheetFromTheme((theme: Theme) => {
             backgroundColor: theme.sidebarBg,
         },
         textFullName: {
-            fontSize: 28,
-            lineHeight: 36,
+            ...typography('Heading', 700, 'SemiBold'),
             color: theme.sidebarText,
-            fontFamily: 'Metropolis-SemiBold',
             marginTop: 16,
         },
         textUserName: {
-            fontSize: 16,
-            lineHeight: 24,
+            ...typography('Body', 200),
             color: theme.sidebarText,
-            fontFamily: 'OpenSans',
             marginTop: 4,
         },
     };
@@ -49,8 +48,7 @@ const getStyleSheet = makeStyleSheetFromTheme((theme: Theme) => {
 
 const AccountUserInfo = ({user, showFullName, theme}: Props) => {
     const styles = getStyleSheet(theme);
-    const nickName = user.nickname ? ` (${user.nickname})` : '';
-    const title = `${user.firstName} ${user.lastName}${nickName}`;
+    const title = getAccountDisplayName(user);
     const userName = `@${user.username}`;
     const accountUserInfoTestId = `account.user_info.${user.id}`;
 

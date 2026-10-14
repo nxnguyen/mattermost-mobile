@@ -1,0 +1,9 @@
+{
+  "applicationId": "com.amobi.collab.platform.otaqa",
+  "channel": "ota-qa",
+  "authenticationScheme": "mmauth",
+  "minimumAndroidSdk": 30,
+  "signingPublicKeySha256": "85f18645a6694ad24633f0c33d9e5cdfdfe25c19edd854d22395641e7dc0267d",
+  "androidManifestSha256": "8fa1c73115d6ceca99c254598fa5161241ad6b4dcac54ef9e6479b559160d263",
+  "iosInfoPlistSha256": "60d0ca38b6de6ff9a8b8176134a6221dba7adecfbee92f213ebf51fb8b7536c6"
+}

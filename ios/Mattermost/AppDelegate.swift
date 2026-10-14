@@ -4,6 +4,7 @@ import React
 import ReactAppDependencyProvider
 import RNKeychain
 import RNNotifications
+import HotUpdater
 import RNSentry
 import react_native_paste_input
 import mattermost_calls_native
@@ -340,7 +341,7 @@ class ReactNativeDelegate: ExpoReactNativeFactoryDelegate {
         #if DEBUG
         return RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
         #else
-        return Bundle.main.url(forResource: "main", withExtension: "jsbundle")
+        return HotUpdater.bundleURL()
         #endif
     }
 }

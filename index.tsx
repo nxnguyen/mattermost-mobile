@@ -4,11 +4,12 @@
 import {RUNNING_E2E} from '@env';
 import TurboLogger from '@mattermost/react-native-turbo-log';
 import {ExpoRoot} from 'expo-router';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {AppRegistry, LogBox, Platform} from 'react-native';
 import {BackgroundTimer} from 'react-native-nitro-bg-timer-plus';
 
 import {logInfo} from './app/utils/log';
+import {checkAndStageUpdate} from './app/utils/ota';
 
 // Opt out of the nitro-bg-timer-plus foreground service — we removed its manifest
 // entries, so we also disable it at runtime to prevent the library from attempting
@@ -62,6 +63,9 @@ if (Platform.OS === 'android') {
 
 // Must be exported or Fast Refresh won't update the context
 export function App() {
+    useEffect(() => {
+        checkAndStageUpdate();
+    }, []);
     const ctx = require.context('./app/routes');
     return <ExpoRoot context={ctx}/>;
 }
