@@ -46,6 +46,7 @@ const HOME = '(home)';
 const INTEGRATION_SELECTOR = 'integration_selector';
 const INVITE = 'invite';
 const JOIN_TEAM = 'join_team';
+const KANBAN = 'kanban';
 const LATEX = 'latex';
 const LOGIN = 'login';
 const MANAGE_CHANNEL_MEMBERS = 'manage_channel_members';
@@ -133,6 +134,7 @@ export default {
     INVITE,
 
     JOIN_TEAM,
+    KANBAN,
     LATEX,
     LOGIN,
     MANAGE_CHANNEL_MEMBERS,

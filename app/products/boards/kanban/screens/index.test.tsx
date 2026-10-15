@@ -1,10 +1,14 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
+import {router} from 'expo-router';
 import React from 'react';
+import {BackHandler} from 'react-native';
 
+import {Screens} from '@constants';
 import ServerUrlProvider from '@context/server';
 import NetworkManager from '@managers/network_manager';
+import * as NavigationStore from '@store/navigation_store';
 import {act, fireEvent, renderWithIntlAndTheme, waitFor} from '@test/intl-test-helper';
 
 import {KanbanScreen} from './index';
@@ -94,5 +98,33 @@ describe('native Kanban project context', () => {
         expect(view.getByText('Board two')).toBeTruthy();
         expect(view.queryByTestId('kanban.editor.title')).toBeNull();
         expect(client.insertFocalboardBlocks.mock.calls[0][0]).toBe('board-one');
+    });
+
+    it('consumes hardware Back on Kanban and returns through the app navigator', async () => {
+        setup();
+        jest.spyOn(NavigationStore, 'useCurrentScreen').mockReturnValue('kanban');
+        const remove = jest.fn();
+        const listener = jest.spyOn(BackHandler, 'addEventListener').mockReturnValue({remove});
+        const view = renderWithIntlAndTheme(screen('one'));
+        await waitFor(() => expect(view.getByTestId('kanban.columns')).toBeTruthy());
+
+        expect(listener).toHaveBeenCalledWith('hardwareBackPress', expect.any(Function));
+        expect(listener.mock.calls[0][1]()).toBe(true);
+        expect(router.back).toHaveBeenCalledTimes(1);
+
+        view.unmount();
+        expect(remove).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not intercept hardware Back while a different screen is visible', async () => {
+        setup();
+        jest.spyOn(NavigationStore, 'useCurrentScreen').mockReturnValue(Screens.ACCOUNT);
+        const listener = jest.spyOn(BackHandler, 'addEventListener');
+        const view = renderWithIntlAndTheme(screen('one'));
+        await waitFor(() => expect(view.getByTestId('kanban.columns')).toBeTruthy());
+
+        expect(listener).toHaveBeenCalledWith('hardwareBackPress', expect.any(Function));
+        expect(listener.mock.calls[0][1]()).toBe(false);
+        expect(router.back).not.toHaveBeenCalled();
     });
 });
