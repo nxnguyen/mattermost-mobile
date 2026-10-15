@@ -11,6 +11,7 @@ import CustomStatus from './custom_status';
 import Logout from './logout';
 import Settings from './settings';
 import UserPresence from './user_presence';
+import WorkspaceLinks from './workspace_links';
 import YourProfile from './your_profile';
 
 import type UserModel from '@typings/database/models/servers/user';
@@ -67,6 +68,7 @@ const AccountOptions = ({user, enableCustomUserStatuses, isTablet, theme}: Accou
             <View style={styles.group}>
                 <YourProfile isTablet={isTablet}/>
                 <Settings/>
+                <WorkspaceLinks/>
                 <AppUpdates/>
             </View>
             <View style={styles.divider}/>
