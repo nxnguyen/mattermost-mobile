@@ -23,9 +23,24 @@ jest.mock('@utils/log', () => ({
     logError: jest.fn(),
 }));
 
-jest.mock('@assets/i18n/en.json', () => ({test: 'Test', hello: 'Hello'}));
+jest.mock('@assets/i18n/en.json', () => ({
+    test: 'Test',
+    hello: 'Hello',
+    'about.mattermost': 'Mattermost',
+    'mobile.calls.foreground_service.title': 'Mattermost',
+    'settings.about.copyright': 'Copyright Mattermost, Inc.',
+    'settings.about.powered_by': '{site} is powered by Mattermost',
+    'settings.notice_text': 'Mattermost uses open source software.',
+    'provider.label': 'Mattermost OAuth',
+    'support.url': 'https://Mattermost.example/help',
+}));
 jest.mock('@assets/i18n/bg.json', () => ({test: 'Тест', hello: 'Здравейте'}));
-jest.mock('@assets/i18n/de.json', () => ({test: 'Test', hello: 'Hallo'}));
+jest.mock('@assets/i18n/de.json', () => ({
+    test: 'Test',
+    hello: 'Hallo',
+    'about.mattermost': 'Mattermost',
+    'about.planNameLearn': 'Mehr über Mattermost {planName}',
+}));
 jest.mock('@assets/i18n/en_AU.json', () => ({test: 'Test', hello: 'G\'day'}));
 jest.mock('@assets/i18n/es.json', () => ({test: 'Prueba', hello: 'Hola'}));
 jest.mock('@assets/i18n/fa.json', () => ({test: 'تست', hello: 'سلام'}));
@@ -160,8 +175,35 @@ describe('i18n', () => {
 
         it('returns english translations for unsupported locale', () => {
             const translations = getTranslations('xx');
-            expect(translations).toEqual(en);
+            expect(translations).toEqual(getTranslations('en'));
             expect(logUtils.logError).not.toHaveBeenCalled();
+        });
+
+        it('should brand product messages while preserving attribution and unrelated values', () => {
+            const translations = getTranslations('en');
+
+            expect(translations['about.mattermost']).toBe('Amobi Collab');
+            expect(translations['mobile.calls.foreground_service.title']).toBe('Amobi Collab');
+            for (const id of ['settings.about.copyright', 'settings.about.powered_by', 'settings.notice_text', 'provider.label', 'support.url']) {
+                expect(translations[id]).toBe(en[id as keyof typeof en]);
+            }
+        });
+
+        it('should keep localized copy and placeholders and brand missing-message fallbacks', () => {
+            const translations = getTranslations('de');
+
+            expect(translations.hello).toBe('Hallo');
+            expect(translations['about.mattermost']).toBe('Amobi Collab');
+            expect(translations['about.planNameLearn']).toBe('Mehr über Amobi Collab {planName}');
+            expect(translations['mobile.calls.foreground_service.title']).toBe('Amobi Collab');
+        });
+
+        it('should preserve source catalogs and reuse a branded catalog', () => {
+            const translations = getTranslations('en');
+
+            expect(en['about.mattermost']).toBe('Mattermost');
+            expect(translations).not.toBe(en);
+            expect(getTranslations('en')).toBe(translations);
         });
 
         it('loads correct polyfills for Chinese locales', () => {

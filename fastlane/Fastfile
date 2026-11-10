@@ -49,7 +49,7 @@ after_all do |lane|
   if ENV['CI'] != 'true'
     if ENV['RESET_GIT_BRANCH'] == 'true'
       branch = ENV['BRANCH_TO_BUILD'] || 'main'
-      package_id = ENV['MAIN_APP_IDENTIFIER'] || 'com.mattermost.rnbeta'
+      package_id = ENV['MAIN_APP_IDENTIFIER'] || 'com.amobi.collab.platform'
       beta_dir = '../android/app/src/main/java/com/mattermost/rnbeta'
       release_dir = "../android/app/src/main/java/#{package_id.gsub '.', '/'}"
 
@@ -436,7 +436,7 @@ platform :ios do
   lane :unsigned do
     UI.success('Building unsigned iOS app')
 
-    ENV['APP_NAME'] = 'Mattermost'
+    ENV['APP_NAME'] = 'Amobi Collab'
     ENV['REPLACE_ASSETS'] = 'true'
     ENV['BUILD_FOR_RELEASE'] = 'true'
     ENV['APP_SCHEME'] = 'mattermost'
@@ -501,10 +501,10 @@ platform :ios do
 
   lane :update_settings do
     # Configure Main app settings
-    app_name = ENV['APP_NAME'] || 'Mattermost Beta'
-    app_bundle_id = ENV['MAIN_APP_IDENTIFIER'] || 'com.mattermost.rnbeta'
-    app_group_id = ENV['IOS_APP_GROUP'] || 'group.com.mattermost.rnbeta'
-    icloud_container = ENV['IOS_ICLOUD_CONTAINER'] || 'iCloud.com.mattermost.rnbeta'
+    app_name = ENV['APP_NAME'] || 'Amobi Collab'
+    app_bundle_id = ENV['MAIN_APP_IDENTIFIER'] || 'com.amobi.collab.platform'
+    app_group_id = ENV['IOS_APP_GROUP'] || 'group.com.amobi.collab.platform'
+    icloud_container = ENV['IOS_ICLOUD_CONTAINER'] || 'iCloud.com.amobi.collab.platform'
     app_scheme = ENV['APP_SCHEME'] || 'mattermost'
     app_auth_scheme = get_auth_scheme
     keychain_group = "$(AppIdentifierPrefix)#{ENV["IOS_KEYCHAIN_GROUP"] || app_bundle_id}"
@@ -521,7 +521,7 @@ platform :ios do
 
     find_replace_string(
         path_to_file: './ios/Mattermost.xcodeproj/project.pbxproj',
-        old_string: 'com.mattermost.rnbeta',
+        old_string: 'com.amobi.collab.platform',
         new_string: app_bundle_id
     )
 
@@ -546,7 +546,7 @@ platform :ios do
     )
 
     # Configure Share extension settings
-    extension_bundle_id = ENV['EXTENSION_APP_IDENTIFIER'] || 'com.mattermost.rnbeta.MattermostShare'
+    extension_bundle_id = ENV['EXTENSION_APP_IDENTIFIER'] || "#{app_bundle_id}.MattermostShare"
     
     update_info_plist(
       xcodeproj: './ios/Mattermost.xcodeproj',
@@ -560,7 +560,7 @@ platform :ios do
 
     find_replace_string(
         path_to_file: './ios/Mattermost.xcodeproj/project.pbxproj',
-        old_string: 'com.mattermost.rnbeta.MattermostShare',
+        old_string: 'com.amobi.collab.platform.MattermostShare',
         new_string: extension_bundle_id
     )
 
@@ -570,7 +570,7 @@ platform :ios do
     )
 
     # Configure Notification Service settings
-    notification_bundle_id = ENV['NOTIFICATION_SERVICE_IDENTIFIER'] || 'com.mattermost.rnbeta.NotificationService'
+    notification_bundle_id = ENV['NOTIFICATION_SERVICE_IDENTIFIER'] || "#{app_bundle_id}.NotificationService"
     update_info_plist(
       xcodeproj: './ios/Mattermost.xcodeproj',
       plist_path: 'NotificationService/Info.plist',
@@ -588,7 +588,7 @@ platform :ios do
 
     find_replace_string(
         path_to_file: './ios/Mattermost.xcodeproj/project.pbxproj',
-        old_string: 'com.mattermost.rnbeta.NotificationService',
+        old_string: 'com.amobi.collab.platform.NotificationService',
         new_string: notification_bundle_id
     )
 
@@ -629,7 +629,7 @@ platform :ios do
             ]
 
             plist["IntuneMAMSettings"] = {
-              "AppGroupIdentifiers" => [ENV['IOS_APP_GROUP'] || 'group.com.mattermost.rnbeta'],
+              "AppGroupIdentifiers" => [app_group_id],
               "MAMTelemetryDisabled" => true,
               "MultiIdentity" => true,
               "ADALLogOverrideDisabled" => true,
@@ -682,7 +682,7 @@ platform :ios do
       sh 'cp -R ../dist/assets/release/splash_screen/ios/SplashIcon.imageset ../ios/Mattermost/Images.xcassets/'
     end
 
-    app_name =  ENV['APP_NAME'] || 'Mattermost Beta'
+    app_name =  ENV['APP_NAME'] || 'Amobi Collab'
     localization_base_path = '../dist/assets/i18n/'
     Dir.glob('*.json', base: localization_base_path) do |item|
       localization_file = File.read(localization_base_path + item)
@@ -764,7 +764,7 @@ platform :ios do
   end
 
   def build_ios
-    app_name =  ENV['APP_NAME'] || 'Mattermost Beta'
+    app_name =  ENV['APP_NAME'] || 'Amobi Collab'
     app_name_sub = app_name.gsub(" ", "_")
     config_mode = ENV['BUILD_FOR_RELEASE'] == 'true' ? 'Release' : 'Debug'
     method = ENV['IOS_BUILD_EXPORT_METHOD'].nil? || ENV['IOS_BUILD_EXPORT_METHOD'].empty? ? 'ad-hoc' : ENV['IOS_BUILD_EXPORT_METHOD']
@@ -795,7 +795,7 @@ platform :ios do
     root_dir = Dir[File.expand_path('..')].first
     ios_build_dir = "#{root_dir}/ios/Build/Products"
 
-    ENV['APP_NAME'] = 'Mattermost'
+    ENV['APP_NAME'] = 'Amobi Collab'
     ENV['REPLACE_ASSETS'] = 'true'
     ENV['BUILD_FOR_RELEASE'] = 'true'
     ENV['APP_SCHEME'] = 'mattermost'
@@ -833,7 +833,7 @@ platform :android do
   lane :unsigned do
     UI.success('Building unsigned Android app')
 
-    ENV['APP_NAME'] = 'Mattermost'
+    ENV['APP_NAME'] = 'Amobi Collab'
     ENV['REPLACE_ASSETS'] = 'true'
     ENV['BUILD_FOR_RELEASE'] = 'true'
     ENV['APP_SCHEME'] = 'mattermost'
@@ -863,14 +863,14 @@ platform :android do
 
   lane :update_identifiers do
     # Set the name for the app
-    app_name =  ENV['APP_NAME'] || 'Mattermost Beta'
+    app_name =  ENV['APP_NAME'] || 'Amobi Collab'
     sh "echo '#{app_name}' > ../fastlane/metadata/android/en-US/title.txt"
     android_change_string_app_name(
         newName: app_name,
         stringsFile: './android/app/src/main/res/values/strings.xml'
     )
 
-    package_id = ENV['MAIN_APP_IDENTIFIER'] || 'com.mattermost.rnbeta'
+    package_id = ENV['MAIN_APP_IDENTIFIER'] || 'com.amobi.collab.platform'
     android_change_package_identifier(newIdentifier: package_id, manifest: './android/app/src/main/AndroidManifest.xml')
     android_update_application_id(app_folder_name: 'android/app', application_id: package_id)
     android_update_namespace(app_folder_name: 'android/app', namespace: package_id)
@@ -1011,7 +1011,7 @@ platform :android do
   end
 
   def move_android_to_root
-    app_name =  ENV['APP_NAME'] || 'Mattermost Beta'
+    app_name =  ENV['APP_NAME'] || 'Amobi Collab'
     app_name_sub = app_name.gsub(" ", "_")
     build_task = ENV['ANDROID_BUILD_TASK'].nil? || ENV['ANDROID_BUILD_TASK'].empty? ? 'assemble' : ENV['ANDROID_BUILD_TASK']
     build_task = build_task.split(",")

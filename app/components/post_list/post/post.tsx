@@ -327,7 +327,7 @@ const Post = ({
         postAvatar = (
             <View style={[styles.profilePictureContainer, pendingPostStyle]}>
                 {(isAutoResponder || (isSystemPost && !showEphemeralAuthor)) ? (
-                    <SystemAvatar theme={theme}/>
+                    <SystemAvatar/>
                 ) : (
                     <Avatar
                         isAutoReponse={isAutoResponder}

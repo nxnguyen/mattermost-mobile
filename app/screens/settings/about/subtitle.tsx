@@ -9,6 +9,13 @@ import {useTheme} from '@context/theme';
 import {changeOpacity, makeStyleSheetFromTheme} from '@utils/theme';
 import {typography} from '@utils/typography';
 
+const messages = defineMessages({
+    description: {
+        id: 'amobi.about.description',
+        defaultMessage: 'Team chat, projects and collaboration in one place.',
+    },
+});
+
 const getStyleSheet = makeStyleSheetFromTheme((theme) => {
     return {
         subtitle: {
@@ -20,33 +27,13 @@ const getStyleSheet = makeStyleSheetFromTheme((theme) => {
     };
 });
 
-const messages = defineMessages({
-    teamEditionSt: {
-        id: 'about.teamEditionSt',
-        defaultMessage: 'All your team communication in one place, instantly searchable and accessible anywhere.',
-    },
-    enterpriseEditionSt: {
-        id: 'about.enterpriseEditionSt',
-        defaultMessage: 'Modern communication from behind your firewall.',
-    },
-});
-
-type SubtitleProps = {
-    config: ClientConfig;
-}
-const Subtitle = ({config}: SubtitleProps) => {
+const Subtitle = () => {
     const theme = useTheme();
     const style = getStyleSheet(theme);
 
-    let message = messages.teamEditionSt;
-
-    if (config.BuildEnterpriseReady === 'true') {
-        message = messages.enterpriseEditionSt;
-    }
-
     return (
         <FormattedText
-            {...message}
+            {...messages.description}
             style={style.subtitle}
             testID='about.subtitle'
         />

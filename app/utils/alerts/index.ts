@@ -7,6 +7,7 @@ import {Alert, Platform, type AlertButton} from 'react-native';
 
 import {switchToServer} from '@actions/app/server';
 import {logout} from '@actions/remote/session';
+import {APP_NAME} from '@constants/branding';
 import DatabaseManager from '@database/manager';
 import {DEFAULT_LOCALE, getLocalizedMessage} from '@i18n';
 import {getServerCredentials} from '@init/credentials';
@@ -274,7 +275,7 @@ export const showDeviceNotTrustedAlert = async (server: string, siteName: string
 
     const resolvedLocale = locale || DEFAULT_LOCALE;
     const buttons = await buildSecurityAlertOptions(server, resolvedLocale);
-    const securedBy = siteName || serverSiteName || 'Mattermost';
+    const securedBy = siteName || serverSiteName || APP_NAME;
 
     Alert.alert(
         getLocalizedMessage(resolvedLocale, messages.blocked_by.id, messages.blocked_by.defaultMessage).replace('{vendor}', securedBy),
@@ -301,7 +302,7 @@ export const showNotSecuredAlert = async (server: string, siteName: string | und
     }
 
     const resolvedLocale = locale || DEFAULT_LOCALE;
-    const securedBy = siteName || serverSiteName || 'Mattermost';
+    const securedBy = siteName || serverSiteName || APP_NAME;
 
     let dismiss: () => void;
     const dismissed = new Promise<void>((resolve) => {
@@ -376,7 +377,7 @@ export const showBiometricFailureAlert = async (server: string, blurOnAuthentica
         }
         dismiss();
     }, retryCallback);
-    const securedBy = siteName || serverSiteName || 'Mattermost';
+    const securedBy = siteName || serverSiteName || APP_NAME;
 
     Alert.alert(
         getLocalizedMessage(resolvedLocale, messages.blocked_by.id, messages.blocked_by.defaultMessage).replace('{vendor}', securedBy),
@@ -403,7 +404,7 @@ export const showBiometricFailureAlertForOrganization = async (server: string, l
  */
 export const showAuthenticationInterruptedAlert = async (server: string, siteName: string | undefined, locale?: string): Promise<'retry' | 'dismiss'> => {
     const resolvedLocale = locale || DEFAULT_LOCALE;
-    const securedBy = siteName || 'Mattermost';
+    const securedBy = siteName || APP_NAME;
 
     const allServers = await queryAllActiveServers()?.fetch();
     const otherServers = allServers?.filter((s) => s.url !== server).map((s) => s.url) || [];

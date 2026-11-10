@@ -93,7 +93,7 @@
           <action android:name="android.intent.action.VIEW" />
           <category android:name="android.intent.category.DEFAULT" />
           <category android:name="android.intent.category.BROWSABLE" />
-          <data android:scheme="mmauthbeta" />
+          <data android:scheme="mmauth" android:host="callback" />
         </intent-filter>
       </activity>
       <service android:name=".NotificationDismissService"
@@ -145,6 +145,6 @@ ZuCJ5hBDIi7P/tAvMCakgtRiSeNfO96fDPQof6buVlhPXJoTBB62JA9Y0HRc6F49
 D6S1Oj1x42EZEBocMhNuytUv7PxrhKIs//f6J87P60bqJus1H10/IQkXvlyYClNi
 76DOJt1fyKq8r5mIak6yymkCAwEAAQ==
 -----END PUBLIC KEY-----" />
-        <meta-data android:name="com.hotupdater.FINGERPRINT_HASH" android:value="57c8a503c3ba738b46d2fb738e210ba37776aa80" />
+        <meta-data android:name="com.hotupdater.FINGERPRINT_HASH" android:value="91c48b95b63f579414231424c8de9e80aa910dde" />
     </application>
 </manifest>

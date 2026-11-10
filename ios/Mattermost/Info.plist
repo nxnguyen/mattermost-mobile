@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>AppGroupIdentifier</key>
-	<string>group.com.mattermost.rnbeta</string>
+	<string>group.com.amobi.collab.platform</string>
 	<key>BundleEntryFilename</key>
 	<string>index.js</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Mattermost Beta</string>
+	<string>Amobi Collab</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.mattermost.rnbeta</string>
+	<string>com.amobi.collab.platform</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -32,7 +32,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>mattermost</string>
-				<string>mmauthbeta</string>
+				<string>mmauth</string>
 			</array>
 		</dict>
 	</array>
@@ -146,6 +146,6 @@ D6S1Oj1x42EZEBocMhNuytUv7PxrhKIs//f6J87P60bqJus1H10/IQkXvlyYClNi
 76DOJt1fyKq8r5mIak6yymkCAwEAAQ==
 -----END PUBLIC KEY-----</string>
 	<key>HOT_UPDATER_FINGERPRINT_HASH</key>
-	<string>488495a0fd6251c8168cd4d1f8f7cc12353e84db</string>
+	<string>ab3ea4672b49335e381c0c26393a3efe97a3b825</string>
 </dict>
 </plist>

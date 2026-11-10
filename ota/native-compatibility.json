@@ -5,5 +5,7 @@
   "minimumAndroidSdk": 30,
   "signingPublicKeySha256": "85f18645a6694ad24633f0c33d9e5cdfdfe25c19edd854d22395641e7dc0267d",
   "androidManifestSha256": "8fa1c73115d6ceca99c254598fa5161241ad6b4dcac54ef9e6479b559160d263",
-  "iosInfoPlistSha256": "60d0ca38b6de6ff9a8b8176134a6221dba7adecfbee92f213ebf51fb8b7536c6"
+  "iosInfoPlistSha256": "60d0ca38b6de6ff9a8b8176134a6221dba7adecfbee92f213ebf51fb8b7536c6",
+  "androidResourcesSha256": "ce66d25fed5a2185ed0ad71cfac4ec313eabcb7ffde1c8eb8bfd17c0d50a3f26",
+  "iosResourcesSha256": "360ac1feaf97a84b212ee842858abe4f5120ccd3b3d466f477c8d8f1cb9bcd07"
 }

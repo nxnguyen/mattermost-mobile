@@ -8,6 +8,7 @@ import 'moment/min/locales';
 import en from '@assets/i18n/en.json';
 import {logError} from '@utils/log';
 
+import {getBrandedTranslations} from './branding';
 import availableLanguages from './languages';
 
 const PRIMARY_LOCALE = 'en';
@@ -257,7 +258,7 @@ export function resetMomentLocale(locale?: string) {
 
 export function getTranslations(lang: string) {
     const locale = getLocaleFromLanguage(lang);
-    return loadTranslation(locale);
+    return getBrandedTranslations(loadTranslation(locale));
 }
 
 export function getLocalizedMessage(lang: string, id: string, defaultMessage?: string) {

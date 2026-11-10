@@ -3,6 +3,7 @@
 
 import {Alert} from 'react-native';
 
+import LocalConfig from '@assets/config.json';
 import {Preferences, Screens, Sso} from '@constants';
 import {navigateToScreen} from '@screens/navigation';
 import {getIntlShape} from '@utils/general';
@@ -44,7 +45,14 @@ jest.mock('@utils/url', () => ({
 }));
 
 describe('Server Utils', () => {
+    const googleOnlyLogin = LocalConfig.GoogleOnlyLogin;
+
+    beforeEach(() => {
+        LocalConfig.GoogleOnlyLogin = false;
+    });
+
     afterAll(() => {
+        LocalConfig.GoogleOnlyLogin = googleOnlyLogin;
         jest.resetAllMocks();
     });
     describe('unsupportedServer', () => {
@@ -103,6 +111,17 @@ describe('Server Utils', () => {
     });
 
     describe('loginOptions', () => {
+        it('should offer only Google when Amobi Google-only login is configured', () => {
+            LocalConfig.GoogleOnlyLogin = true;
+            const result = loginOptions({EnableSignInWithEmail: 'true', EnableSignInWithUsername: 'true'} as ClientConfig, {IsLicensed: 'false'} as ClientLicense);
+            expect(result).toEqual({
+                enabledSSOs: [Sso.GOOGLE],
+                hasLoginForm: false,
+                numberSSOs: 1,
+                ssoOptions: {[Sso.GOOGLE]: {enabled: true}},
+            });
+        });
+
         it('should return correct login options', () => {
             const config = {
                 EnableSaml: 'true',

@@ -1,6 +1,6 @@
 {
   "name": "Mattermost",
-  "displayName": "Mattermost",
+  "displayName": "Amobi Collab",
   "expo": {
     "scheme": "mattermost",
     "plugins": [

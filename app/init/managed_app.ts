@@ -7,6 +7,7 @@ import {isRootedExperimentalAsync} from 'expo-device';
 import {defineMessages} from 'react-intl';
 import {Alert, AppState, type AppStateStatus, type EventSubscription, type NativeEventSubscription, Platform} from 'react-native';
 
+import {APP_NAME} from '@constants/branding';
 import {DEFAULT_LOCALE, getTranslations} from '@i18n';
 import {showAuthenticationInterruptedAlert, showNotSecuredAlert} from '@utils/alerts';
 import {getFullErrorMessage} from '@utils/errors';
@@ -43,7 +44,7 @@ class ManagedAppSingleton {
     performingAuthentication = false;
     previousAppState?: AppStateStatus;
     processConfigTimeout?: NodeJS.Timeout;
-    vendor = 'Mattermost';
+    vendor = APP_NAME;
     cacheConfig?: ManagedConfig = undefined;
     private emmListener: EventSubscription | undefined;
     private appStateChangeListener: NativeEventSubscription | undefined;

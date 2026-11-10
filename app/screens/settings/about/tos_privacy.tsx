@@ -5,15 +5,27 @@ import React from 'react';
 import {Text} from 'react-native';
 
 import FormattedText from '@components/formatted_text';
+import AboutLinks from '@constants/about_links';
 import {useTheme} from '@context/theme';
 import {changeOpacity, makeStyleSheetFromTheme} from '@utils/theme';
 import {typography} from '@utils/typography';
+
+const DEFAULT_TERMS_URLS = new Set([
+    AboutLinks.TERMS_OF_SERVICE,
+    'https://mattermost.com/pl/terms-of-use/',
+]);
+const DEFAULT_PRIVACY_URLS = new Set([
+    AboutLinks.PRIVACY_POLICY,
+    'https://mattermost.com/pl/privacy-policy/',
+]);
 
 const getStyleSheet = makeStyleSheetFromTheme((theme) => {
     return {
         noticeLink: {
             color: theme.linkColor,
             ...typography('Body', 50),
+            textDecorationLine: 'underline',
+            flexShrink: 1,
         },
         footerText: {
             color: changeOpacity(theme.centerChannelColor, 0.5),
@@ -35,8 +47,8 @@ const TosPrivacyContainer = ({config, onPressTOS, onPressPrivacyPolicy}: TosPriv
     const theme = useTheme();
     const style = getStyleSheet(theme);
 
-    const hasTermsOfServiceLink = Boolean(config.TermsOfServiceLink);
-    const hasPrivacyPolicyLink = Boolean(config.PrivacyPolicyLink);
+    const hasTermsOfServiceLink = Boolean(config.TermsOfServiceLink && !DEFAULT_TERMS_URLS.has(config.TermsOfServiceLink));
+    const hasPrivacyPolicyLink = Boolean(config.PrivacyPolicyLink && !DEFAULT_PRIVACY_URLS.has(config.PrivacyPolicyLink));
 
     return (
         <>
@@ -46,6 +58,7 @@ const TosPrivacyContainer = ({config, onPressTOS, onPressPrivacyPolicy}: TosPriv
                     defaultMessage='Terms of Service'
                     style={style.noticeLink}
                     onPress={onPressTOS}
+                    accessibilityRole='link'
                     testID='about.terms_of_service'
                 />
             )}
@@ -60,6 +73,7 @@ const TosPrivacyContainer = ({config, onPressTOS, onPressPrivacyPolicy}: TosPriv
                     defaultMessage='Privacy Policy'
                     style={style.noticeLink}
                     onPress={onPressPrivacyPolicy}
+                    accessibilityRole='link'
                     testID='about.privacy_policy'
                 />
             )}

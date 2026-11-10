@@ -271,14 +271,14 @@ describe('showDeviceNotTrustedAlert', () => {
         );
     });
 
-    it('should show alert with Mattermost as default when no site name available', async () => {
+    it('should show alert with Amobi Collab as default when no site name available', async () => {
         jest.mocked(getConfigValue).mockResolvedValue(undefined);
 
         await showDeviceNotTrustedAlert(serverUrl, undefined, 'en');
 
         expect(Alert.alert).toHaveBeenCalledWith(
-            'Blocked by Mattermost',
-            'Jailbroken or rooted devices are not trusted by Mattermost.',
+            'Blocked by Amobi Collab',
+            'Jailbroken or rooted devices are not trusted by Amobi Collab.',
             expect.any(Array),
             {cancelable: false},
         );
@@ -384,7 +384,7 @@ describe('showNotSecuredAlert', () => {
         await untilShown();
 
         expect(Alert.alert).toHaveBeenCalledWith(
-            'Blocked by Mattermost',
+            'Blocked by Amobi Collab',
             expect.stringContaining('Mattermost'),
             expect.any(Array),
             {cancelable: false},
@@ -399,7 +399,7 @@ describe('showNotSecuredAlert', () => {
         await untilShown();
 
         expect(Alert.alert).toHaveBeenCalledWith(
-            'Blocked by Mattermost',
+            'Blocked by Amobi Collab',
             expect.stringContaining('Mattermost'),
             expect.any(Array),
             {cancelable: false},
@@ -560,14 +560,14 @@ describe('showBiometricFailureAlert', () => {
         );
     });
 
-    it('should use Mattermost as default when no site name available', async () => {
+    it('should use Amobi Collab as default when no site name available', async () => {
         jest.mocked(getConfigValue).mockResolvedValue(undefined);
 
         showBiometricFailureAlert(serverUrl, false, undefined, 'en');
         await untilShown();
 
         expect(Alert.alert).toHaveBeenCalledWith(
-            'Blocked by Mattermost',
+            'Blocked by Amobi Collab',
             'Biometric or Passcode authentication failed.',
             expect.any(Array),
             {cancelable: false},

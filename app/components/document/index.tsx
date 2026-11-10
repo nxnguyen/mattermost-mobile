@@ -1,11 +1,14 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import {forwardRef, useImperativeHandle, type ReactNode, useCallback} from 'react';
+import {forwardRef, useImperativeHandle, type ReactNode, useCallback, useState} from 'react';
 import {useIntl} from 'react-intl';
 
 import {alertDownloadDocumentDisabled, alertOnlyPDFSupported} from '@utils/document';
+import {getTextPreviewType} from '@utils/document/preview';
 import {isPdf} from '@utils/file';
+
+import TextFilePreview from './text_file_preview';
 
 export type DocumentRef = {
     handlePreviewPress: () => void;
@@ -21,10 +24,17 @@ type DocumentProps = {
 
 const Document = forwardRef<DocumentRef, DocumentProps>(({canDownloadFiles, children, downloadAndPreviewFile, enableSecureFilePreview, file}: DocumentProps, ref) => {
     const intl = useIntl();
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const closePreview = useCallback(() => setPreviewOpen(false), []);
 
     const handlePreviewPress = useCallback(async () => {
         if (!canDownloadFiles) {
             alertDownloadDocumentDisabled(intl);
+            return;
+        }
+
+        if (getTextPreviewType(file)) {
+            setPreviewOpen(true);
             return;
         }
 
@@ -40,7 +50,17 @@ const Document = forwardRef<DocumentRef, DocumentProps>(({canDownloadFiles, chil
         handlePreviewPress,
     }), [handlePreviewPress]);
 
-    return children;
+    return (
+        <>
+            {children}
+            {previewOpen && (
+                <TextFilePreview
+                    file={file}
+                    onClose={closePreview}
+                />
+            )}
+        </>
+    );
 });
 
 Document.displayName = 'Document';

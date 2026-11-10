@@ -24,11 +24,11 @@
 	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.mattermost.rnbeta</string>
+		<string>group.com.amobi.collab.platform</string>
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)com.mattermost.rnbeta</string>
+		<string>$(AppIdentifierPrefix)com.amobi.collab.platform</string>
 	</array>
 </dict>
 </plist>

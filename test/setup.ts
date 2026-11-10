@@ -631,7 +631,7 @@ jest.mock('@mattermost/react-native-paste-input', () => {
     };
 });
 
-jest.mock('@react-native-clipboard/clipboard', () => ({}));
+jest.mock('@react-native-clipboard/clipboard', () => ({setString: jest.fn()}));
 
 jest.mock('@react-native-documents/picker', () => ({}));
 

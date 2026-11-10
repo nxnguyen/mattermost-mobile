@@ -601,11 +601,11 @@
       {
         "type": "contents",
         "id": "ota/native-compatibility.json",
-        "contents": "{\n  \"applicationId\": \"com.amobi.collab.platform\",\n  \"channel\": \"production\",\n  \"authenticationScheme\": \"mmauth\",\n  \"minimumAndroidSdk\": 30,\n  \"signingPublicKeySha256\": \"85f18645a6694ad24633f0c33d9e5cdfdfe25c19edd854d22395641e7dc0267d\",\n  \"androidManifestSha256\": \"8fa1c73115d6ceca99c254598fa5161241ad6b4dcac54ef9e6479b559160d263\",\n  \"iosInfoPlistSha256\": \"60d0ca38b6de6ff9a8b8176134a6221dba7adecfbee92f213ebf51fb8b7536c6\"\n}\n",
+        "contents": "{\n  \"applicationId\": \"com.amobi.collab.platform\",\n  \"channel\": \"production\",\n  \"authenticationScheme\": \"mmauth\",\n  \"minimumAndroidSdk\": 30,\n  \"signingPublicKeySha256\": \"85f18645a6694ad24633f0c33d9e5cdfdfe25c19edd854d22395641e7dc0267d\",\n  \"androidManifestSha256\": \"8fa1c73115d6ceca99c254598fa5161241ad6b4dcac54ef9e6479b559160d263\",\n  \"iosInfoPlistSha256\": \"60d0ca38b6de6ff9a8b8176134a6221dba7adecfbee92f213ebf51fb8b7536c6\",\n  \"androidResourcesSha256\": \"ce66d25fed5a2185ed0ad71cfac4ec313eabcb7ffde1c8eb8bfd17c0d50a3f26\",\n  \"iosResourcesSha256\": \"360ac1feaf97a84b212ee842858abe4f5120ccd3b3d466f477c8d8f1cb9bcd07\"\n}\n",
         "reasons": [
           "custom-user-config"
         ],
-        "hash": "c75d8ef2833229caf75287744890931a800a0026"
+        "hash": "2c913c4ea81094421adb08f590faab8cb6bffc80"
       },
       {
         "type": "contents",
@@ -635,7 +635,7 @@
         "hash": "b2f77aedbbd0e3f4c29463bcde0b9a4cd2a4aab7"
       }
     ],
-    "hash": "488495a0fd6251c8168cd4d1f8f7cc12353e84db"
+    "hash": "ab3ea4672b49335e381c0c26393a3efe97a3b825"
   },
   "android": {
     "sources": [
@@ -1528,29 +1528,29 @@
       {
         "type": "contents",
         "id": "android/app/src/main/res/values-night/colors.xml",
-        "contents": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n    <color name=\"white\">#FFFFFF</color>\n    <color name=\"transparent\">#00000000</color>\n    <color name=\"splashscreen_bg\">#090A0B</color>\n</resources>\n",
+        "contents": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n    <color name=\"white\">#FFFFFF</color>\n    <color name=\"transparent\">#00000000</color>\n    <color name=\"splashscreen_bg\">#0F2C4A</color>\n</resources>\n",
         "reasons": [
           "custom-user-config"
         ],
-        "hash": "a23d6bbc3483de5e3eb8d75d42b9b63fd1882b13"
+        "hash": "7bf7a1506e5bc360c62bf7a821ec7bd159091cf3"
       },
       {
         "type": "contents",
         "id": "android/app/src/main/res/values/colors.xml",
-        "contents": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n    <color name=\"white\">#FFFFFF</color>\n    <color name=\"transparent\">#00000000</color>\n    <color name=\"splashscreen_bg\">#FFFFFF</color>\n</resources>\n",
+        "contents": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n    <color name=\"white\">#FFFFFF</color>\n    <color name=\"transparent\">#00000000</color>\n    <color name=\"splashscreen_bg\">#0F2C4A</color>\n</resources>\n",
         "reasons": [
           "custom-user-config"
         ],
-        "hash": "c6c2a964d984c822d59896f02d46cff2ce5f06a9"
+        "hash": "7bf7a1506e5bc360c62bf7a821ec7bd159091cf3"
       },
       {
         "type": "contents",
         "id": "android/app/src/main/res/values/strings.xml",
-        "contents": "<resources>\n    <string name=\"app_name\">Amobi Collab</string>\n    <string name=\"inAppPinCode_title\">in-App Pincode</string>\n    <string name=\"inAppPinCode_description\">Require users to authenticate as the owner of the phone before using the app. Prompts for fingerprint or passcode when the app first opens and when the app has been in the background for more than 5 minutes.</string>\n    <string name=\"blurApplicationScreen_title\">Blur Application Screen</string>\n    <string name=\"blurApplicationScreen_description\">Blur the app when it’s set to background to protect any confidential on-screen information, it also prevents taking screenshots of the app.</string>\n    <string name=\"jailbreakProtection_title\">Jailbreak &#x2F; Root Detection</string>\n    <string name=\"jailbreakProtection_description\">Disable app launch on Jailbroken or rooted devices.</string>\n    <string name=\"copyAndPasteProtection_title\">Copy&amp;Paste Protection</string>\n    <string name=\"copyAndPasteProtection_description\">Disable the ability to copy from or paste into any text inputs in the app.</string>\n    <string name=\"serverUrl_title\">Mattermost Server URL</string>\n    <string name=\"serverUrl_description\">Set a default Server URL for your Mattermost instance.</string>\n    <string name=\"serverName_title\">Mattermost Server Name</string>\n    <string name=\"serverName_description\">Set a default Server Name for your Mattermost instance.</string>\n    <string name=\"allowOtherServers_title\">Allow Other Servers</string>\n    <string name=\"allowOtherServers_description\">Allow the user to change the above server URL.</string>\n    <string name=\"username_title\">Default Username</string>\n    <string name=\"username_description\">Set the username or email address to use to authenticate against the Mattermost Server.</string>\n    <string name=\"timeout_title\">Default Request Timeout</string>\n    <string name=\"timeout_description\">How long in milliseconds the mobile app should wait for the server to respond.</string>\n    <string name=\"vendor_title\">EMM Vendor or Company Name</string>\n    <string name=\"vendor_description\">Name of the EMM vendor or company deploying the app. Used in help text when prompting for passcodes so users are aware why the app is being protected.</string>\n    <string name=\"inAppSessionAuth_title\">In-App Session Auth</string>\n    <string name=\"inAppSessionAuth_description\">Instead of default flow from the mobile browser, enforce SSO with the WebView.</string>\n</resources>\n",
+        "contents": "<resources>\n    <string name=\"app_name\">Amobi Collab</string>\n    <string name=\"inAppPinCode_title\">in-App Pincode</string>\n    <string name=\"inAppPinCode_description\">Require users to authenticate as the owner of the phone before using the app. Prompts for fingerprint or passcode when the app first opens and when the app has been in the background for more than 5 minutes.</string>\n    <string name=\"blurApplicationScreen_title\">Blur Application Screen</string>\n    <string name=\"blurApplicationScreen_description\">Blur the app when it’s set to background to protect any confidential on-screen information, it also prevents taking screenshots of the app.</string>\n    <string name=\"jailbreakProtection_title\">Jailbreak &#x2F; Root Detection</string>\n    <string name=\"jailbreakProtection_description\">Disable app launch on Jailbroken or rooted devices.</string>\n    <string name=\"copyAndPasteProtection_title\">Copy&amp;Paste Protection</string>\n    <string name=\"copyAndPasteProtection_description\">Disable the ability to copy from or paste into any text inputs in the app.</string>\n    <string name=\"serverUrl_title\">Amobi Collab Server URL</string>\n    <string name=\"serverUrl_description\">Set a default Server URL for your Amobi Collab instance.</string>\n    <string name=\"serverName_title\">Amobi Collab Server Name</string>\n    <string name=\"serverName_description\">Set a default Server Name for your Amobi Collab instance.</string>\n    <string name=\"allowOtherServers_title\">Allow Other Servers</string>\n    <string name=\"allowOtherServers_description\">Allow the user to change the above server URL.</string>\n    <string name=\"username_title\">Default Username</string>\n    <string name=\"username_description\">Set the username or email address to use to authenticate against the Amobi Collab Server.</string>\n    <string name=\"timeout_title\">Default Request Timeout</string>\n    <string name=\"timeout_description\">How long in milliseconds the mobile app should wait for the server to respond.</string>\n    <string name=\"vendor_title\">EMM Vendor or Company Name</string>\n    <string name=\"vendor_description\">Name of the EMM vendor or company deploying the app. Used in help text when prompting for passcodes so users are aware why the app is being protected.</string>\n    <string name=\"inAppSessionAuth_title\">In-App Session Auth</string>\n    <string name=\"inAppSessionAuth_description\">Instead of default flow from the mobile browser, enforce SSO with the WebView.</string>\n</resources>\n",
         "reasons": [
           "custom-user-config"
         ],
-        "hash": "4b7647c3d5fce3c0e53985f9eb3e8c60ad2454c1"
+        "hash": "3ba2209ae95a2b5479d52d68621c26294f52b553"
       },
       {
         "type": "contents",
@@ -1636,11 +1636,11 @@
       {
         "type": "contents",
         "id": "ota/native-compatibility.json",
-        "contents": "{\n  \"applicationId\": \"com.amobi.collab.platform\",\n  \"channel\": \"production\",\n  \"authenticationScheme\": \"mmauth\",\n  \"minimumAndroidSdk\": 30,\n  \"signingPublicKeySha256\": \"85f18645a6694ad24633f0c33d9e5cdfdfe25c19edd854d22395641e7dc0267d\",\n  \"androidManifestSha256\": \"8fa1c73115d6ceca99c254598fa5161241ad6b4dcac54ef9e6479b559160d263\",\n  \"iosInfoPlistSha256\": \"60d0ca38b6de6ff9a8b8176134a6221dba7adecfbee92f213ebf51fb8b7536c6\"\n}\n",
+        "contents": "{\n  \"applicationId\": \"com.amobi.collab.platform\",\n  \"channel\": \"production\",\n  \"authenticationScheme\": \"mmauth\",\n  \"minimumAndroidSdk\": 30,\n  \"signingPublicKeySha256\": \"85f18645a6694ad24633f0c33d9e5cdfdfe25c19edd854d22395641e7dc0267d\",\n  \"androidManifestSha256\": \"8fa1c73115d6ceca99c254598fa5161241ad6b4dcac54ef9e6479b559160d263\",\n  \"iosInfoPlistSha256\": \"60d0ca38b6de6ff9a8b8176134a6221dba7adecfbee92f213ebf51fb8b7536c6\",\n  \"androidResourcesSha256\": \"ce66d25fed5a2185ed0ad71cfac4ec313eabcb7ffde1c8eb8bfd17c0d50a3f26\",\n  \"iosResourcesSha256\": \"360ac1feaf97a84b212ee842858abe4f5120ccd3b3d466f477c8d8f1cb9bcd07\"\n}\n",
         "reasons": [
           "custom-user-config"
         ],
-        "hash": "c75d8ef2833229caf75287744890931a800a0026"
+        "hash": "2c913c4ea81094421adb08f590faab8cb6bffc80"
       },
       {
         "type": "contents",
@@ -1670,6 +1670,6 @@
         "hash": "d59f601b605607389b2217feed9176361a292cd7"
       }
     ],
-    "hash": "57c8a503c3ba738b46d2fb738e210ba37776aa80"
+    "hash": "91c48b95b63f579414231424c8de9e80aa910dde"
   }
 }

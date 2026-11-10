@@ -338,8 +338,7 @@ class PushNotificationsSingleton {
 
             const token = `${prefix}-v2:${deviceToken}`;
             storeDeviceToken(token);
-            const redactedDeviceId = deviceToken.substring(0, 16);
-            logDebug('Notification token registered', `${prefix}-v2:${redactedDeviceId}...`);
+            logDebug('Notification token registered', {platform: Platform.OS});
 
             // Store the device token in the default database
             this.requestNotificationReplyPermissions();
@@ -352,7 +351,7 @@ class PushNotificationsSingleton {
     };
 
     NotificationsRegistrationFailed = (event: RegistrationError) => {
-        logDebug('Notification registration failed', event);
+        logDebug('Notification registration failed', {code: event.code, domain: event.domain});
     };
 
     removeChannelNotifications = async (serverUrl: string, channelId: string) => {

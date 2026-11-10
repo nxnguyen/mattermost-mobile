@@ -3,6 +3,7 @@
 
 import {Alert, type AlertButton} from 'react-native';
 
+import LocalConfig from '@assets/config.json';
 import {Screens, Sso, SupportedServer, Launch} from '@constants';
 import {navigateToScreen} from '@screens/navigation';
 import {getErrorMessage} from '@utils/errors';
@@ -51,6 +52,17 @@ export async function addNewServer(theme: Theme, serverUrl?: string, displayName
 }
 
 export function loginOptions(config: ClientConfig, license: ClientLicense) {
+    if (LocalConfig.GoogleOnlyLogin) {
+        return {
+            enabledSSOs: [Sso.GOOGLE],
+            hasLoginForm: false,
+            numberSSOs: 1,
+            ssoOptions: {
+                [Sso.GOOGLE]: {enabled: true},
+            },
+        };
+    }
+
     const isLicensed = license.IsLicensed === 'true';
     const samlEnabled = config.EnableSaml === 'true' && isLicensed && license.SAML === 'true';
     const gitlabEnabled = config.EnableSignUpWithGitLab === 'true';
@@ -76,7 +88,7 @@ export function loginOptions(config: ClientConfig, license: ClientLicense) {
         [Sso.OFFICE365]: {enabled: o365Enabled},
         [Sso.OPENID]: {enabled: openIdEnabled, text: config.OpenIdButtonText},
     };
-    const enabledSSOs = Object.keys(ssoOptions).filter((key) => ssoOptions[key]);
+    const enabledSSOs = Object.keys(ssoOptions).filter((key) => ssoOptions[key].enabled);
     const numberSSOs = enabledSSOs.length;
 
     return {

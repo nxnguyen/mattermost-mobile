@@ -130,11 +130,11 @@ describe('emailLogs', () => {
         }));
     });
 
-    it('should fall back to Mattermost in subject when siteName is undefined', async () => {
+    it('should fall back to Amobi Collab in subject when siteName is undefined', async () => {
         await emailLogs(metadata, undefined, 'support@example.com', false);
 
         expect(Share.shareSingle).toHaveBeenCalledWith(expect.objectContaining({
-            subject: 'Problem with Mattermost mobile app',
+            subject: 'Problem with Amobi Collab mobile app',
         }));
     });
 

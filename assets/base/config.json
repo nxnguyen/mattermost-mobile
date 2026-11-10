@@ -1,12 +1,14 @@
 {
     "AuthUrlScheme": "mmauth://",
     "AuthUrlSchemeDev": "mmauthbeta://",
-    "DefaultServerUrl": "",
-    "DefaultServerName": "",
+    "DefaultServerUrl": "https://152.42.230.207.sslip.io",
+    "DefaultServerName": "Amobi Collab",
+    "GitServerUrl": "https://git.152.42.230.207.sslip.io",
     "TestServerUrl": "http://localhost:8065",
-    "AutoSelectServerUrl": false,
+    "AutoSelectServerUrl": true,
+    "GoogleOnlyLogin": true,
 
-    "WebsiteURL": "https://mattermost.com",
+    "WebsiteURL": "https://152.42.230.207.sslip.io",
     "ServerNoticeURL": "https://github.com/mattermost/mattermost-server/blob/master/NOTICE.txt",
     "MobileNoticeURL": "https://github.com/mattermost/mattermost-mobile/blob/master/NOTICE.txt",
 

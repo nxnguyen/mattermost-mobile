@@ -9,6 +9,7 @@ import {Alert, Linking, Platform} from 'react-native';
 import Permissions, {PERMISSIONS} from 'react-native-permissions';
 
 import {Files} from '@constants';
+import {getTextPreviewType} from '@utils/document/preview';
 import {generateId} from '@utils/general';
 import keyMirror from '@utils/key_mirror';
 import {logError} from '@utils/log';
@@ -277,6 +278,10 @@ export const isImage = (file?: FileInfo | FileModel) => {
 export const isDocument = (file?: FileInfo | FileModel) => {
     if (!file) {
         return false;
+    }
+
+    if (getTextPreviewType(file)) {
+        return true;
     }
 
     let mime = 'mime_type' in file ? file.mime_type : file.mimeType;

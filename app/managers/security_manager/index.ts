@@ -11,6 +11,7 @@ import {terminateSession} from '@actions/local/session';
 import {getCurrentUserLocale} from '@actions/local/user';
 import {logout} from '@actions/remote/session';
 import {Events} from '@constants';
+import {APP_NAME} from '@constants/branding';
 import DatabaseManager from '@database/manager';
 import {DEFAULT_LOCALE, getTranslations} from '@i18n';
 import ManagedApp from '@init/managed_app';
@@ -777,7 +778,7 @@ class SecurityManagerSingleton {
 
         try {
             await Emm.authenticate({
-                reason: translations[messages.securedBy.id].replace('{vendor}', siteName || config?.siteName || 'Mattermost'),
+                reason: translations[messages.securedBy.id].replace('{vendor}', siteName || config?.siteName || APP_NAME),
                 fallback: true,
                 supressEnterPassword: false,
                 blurOnAuthenticate: this.shouldBlurOnAuthenticate(server),

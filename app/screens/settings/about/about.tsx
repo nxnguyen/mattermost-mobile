@@ -2,19 +2,16 @@
 // See LICENSE.txt for license information.
 
 import Clipboard from '@react-native-clipboard/clipboard';
-import {applicationId, nativeApplicationVersion, nativeBuildVersion} from 'expo-application';
+import {nativeApplicationVersion, nativeBuildVersion} from 'expo-application';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {useIntl} from 'react-intl';
-import {Text, View} from 'react-native';
+import {defineMessages, useIntl} from 'react-intl';
+import {Image, Text, View} from 'react-native';
 
 import {getLicenseLoadMetric} from '@actions/remote/license';
-import Config from '@assets/config.json';
 import Button from '@components/button';
-import CompassIcon from '@components/compass_icon';
 import FormattedText from '@components/formatted_text';
 import SettingContainer from '@components/settings/container';
 import {Screens} from '@constants';
-import AboutLinks from '@constants/about_links';
 import {SNACK_BAR_TYPE} from '@constants/snack_bar';
 import {useServerUrl} from '@context/server';
 import {useTheme} from '@context/theme';
@@ -28,20 +25,35 @@ import {typography} from '@utils/typography';
 import {tryOpenURL} from '@utils/url';
 import {onOpenLinkError} from '@utils/url/links';
 
-import LearnMore from './learn_more';
 import Subtitle from './subtitle';
 import Title from './title';
 import TosPrivacyContainer from './tos_privacy';
 
-const MATTERMOST_BUNDLE_IDS = ['com.mattermost.rnbeta', 'com.mattermost.rn'];
-
+const OPEN_SOURCE_NOTICES_URL = 'https://152.42.230.207.sslip.io/static/amobi-open-source-notices.txt';
 const TABLET_EXTRA_PADDING = 20;
+const logo = require('@assets/images/logo.png');
+
+const messages = defineMessages({
+    copyright: {
+        id: 'amobi.about.copyright',
+        defaultMessage: 'Amobi Collab · {currentYear}',
+    },
+    notices: {
+        id: 'amobi.about.notices',
+        defaultMessage: 'Open source licenses and notices',
+    },
+});
 
 const getStyleSheet = makeStyleSheetFromTheme((theme) => {
     return {
         logoContainer: {
             alignItems: 'center',
             marginTop: 20,
+        },
+        logo: {
+            width: 80,
+            height: 80,
+            borderRadius: 16,
         },
 
         // Extra inset on tablet around all About content (with SettingContainer's 20 → 40 horizontal total)
@@ -58,10 +70,14 @@ const getStyleSheet = makeStyleSheetFromTheme((theme) => {
             ...typography('Body', 200, 'SemiBold'),
             marginRight: 8,
             color: theme.centerChannelColor,
+            flexShrink: 1,
+            maxWidth: '45%',
         },
         rightHeading: {
             ...typography('Body', 200, 'Regular'),
             color: theme.centerChannelColor,
+            flex: 1,
+            minWidth: 0,
         },
         infoContainer: {
             flexDirection: 'column',
@@ -80,6 +96,7 @@ const getStyleSheet = makeStyleSheetFromTheme((theme) => {
         noticeLink: {
             color: theme.linkColor,
             ...typography('Body', 50, 'Regular'),
+            textDecorationLine: 'underline',
         },
         hashContainer: {
             flexDirection: 'column',
@@ -92,16 +109,17 @@ const getStyleSheet = makeStyleSheetFromTheme((theme) => {
             color: changeOpacity(theme.centerChannelColor, 0.64),
             ...typography('Body', 50),
             marginBottom: 10,
-        },
-        copyrightText: {
-            marginBottom: 0,
+            flexShrink: 1,
         },
         tosPrivacyContainer: {
             flexDirection: 'row',
+            flexWrap: 'wrap',
             marginBottom: 10,
         },
         group: {
             flexDirection: 'row',
+            alignItems: 'flex-start',
+            width: '100%',
         },
         copyInfoButtonContainer: {
             width: 120,
@@ -151,25 +169,17 @@ const About = ({config, license}: AboutProps) => {
         tryOpenURL(url, onError);
     }, [intl]);
 
-    const handleAboutTeam = usePreventDoubleTap(useCallback(() => {
-        return openURL(Config.WebsiteURL);
-    }, [openURL]));
-
-    const handlePlatformNotice = usePreventDoubleTap(useCallback(() => {
-        return openURL(Config.ServerNoticeURL);
-    }, [openURL]));
-
-    const handleMobileNotice = usePreventDoubleTap(useCallback(() => {
-        return openURL(Config.MobileNoticeURL);
+    const handleOpenSourceNotices = usePreventDoubleTap(useCallback(() => {
+        return openURL(OPEN_SOURCE_NOTICES_URL);
     }, [openURL]));
 
     const handleTermsOfService = usePreventDoubleTap(useCallback(() => {
-        return openURL(AboutLinks.TERMS_OF_SERVICE);
-    }, [openURL]));
+        return openURL(config.TermsOfServiceLink);
+    }, [config.TermsOfServiceLink, openURL]));
 
     const handlePrivacyPolicy = usePreventDoubleTap(useCallback(() => {
-        return openURL(AboutLinks.PRIVACY_POLICY);
-    }, [openURL]));
+        return openURL(config.PrivacyPolicyLink);
+    }, [config.PrivacyPolicyLink, openURL]));
 
     const serverVersion = useMemo(() => {
         const buildNumber = config.BuildNumber;
@@ -209,17 +219,13 @@ const About = ({config, license}: AboutProps) => {
         <SettingContainer testID='about'>
             <View style={isTablet ? styles.tabletContentWrapper : undefined}>
                 <View style={styles.logoContainer}>
-                    <CompassIcon
-                        color={theme.centerChannelColor}
-                        name='mattermost'
-                        size={80}
+                    <Image
+                        source={logo}
+                        style={styles.logo}
                         testID='about.logo'
                     />
-                    <Title
-                        config={config}
-                        license={license}
-                    />
-                    <Subtitle config={config}/>
+                    <Title/>
+                    <Subtitle/>
                     <View
                         style={styles.thinLine}
                     />
@@ -321,28 +327,13 @@ const About = ({config, license}: AboutProps) => {
                             />
                         </View>
                     )}
-                    <LearnMore
-                        config={config}
-                        license={license}
-                        onPress={handleAboutTeam}
-                    />
-                    {!MATTERMOST_BUNDLE_IDS.includes(applicationId || '') &&
-                    <FormattedText
-                        defaultMessage='{site} is powered by Mattermost'
-                        id={'settings.about.powered_by'}
-                        style={styles.footerText}
-                        testID='about.powered_by'
-                        values={{site: config.SiteName}}
-                    />
-                    }
                     <View
                         style={styles.thinLine}
                     />
                     <FormattedText
-                        defaultMessage='Copyright 2015-{currentYear} Mattermost, Inc. All rights reserved'
-                        id={'settings.about.copyright'}
-                        style={[styles.footerText, styles.copyrightText]}
-                        testID='about.copyright'
+                        {...messages.copyright}
+                        style={styles.footerText}
+                        testID='about.brand_footer'
                         values={{currentYear: new Date().getFullYear()}}
                     />
                     <View style={styles.tosPrivacyContainer}>
@@ -354,28 +345,11 @@ const About = ({config, license}: AboutProps) => {
                     </View>
                     <View style={styles.noticeContainer}>
                         <FormattedText
-                            id={'settings.notice_text'}
-                            defaultMessage='Mattermost is made possible by the open source software used in our {platform} and {mobile}.'
-                            style={styles.footerText}
-                            values={{
-                                platform: (
-                                    <FormattedText
-                                        defaultMessage='server'
-                                        id={'settings.notice_platform_link'}
-                                        onPress={handlePlatformNotice}
-                                        style={styles.noticeLink}
-                                    />
-                                ),
-                                mobile: (
-                                    <FormattedText
-                                        defaultMessage='mobile apps'
-                                        id={'settings.notice_mobile_link'}
-                                        onPress={handleMobileNotice}
-                                        style={[styles.noticeLink, {marginLeft: 5}]}
-                                    />
-                                ),
-                            }}
-                            testID='about.notice_text'
+                            {...messages.notices}
+                            style={[styles.footerText, styles.noticeLink]}
+                            onPress={handleOpenSourceNotices}
+                            accessibilityRole='link'
+                            testID='about.notices'
                         />
                     </View>
                     <View style={styles.hashContainer}>

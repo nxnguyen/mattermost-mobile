@@ -7,12 +7,14 @@ import {DeviceEventEmitter, StyleSheet, Text, View} from 'react-native';
 import {RectButton, Pressable} from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
+import TextFilePreview from '@components/document/text_file_preview';
 import FileIcon from '@components/files/file_icon';
 import {Events, Preferences} from '@constants';
 import {useServerUrl} from '@context/server';
 import SecurityManager from '@managers/security_manager';
 import DownloadWithAction from '@screens/gallery/footer/download_with_action';
 import {buttonBackgroundStyle, buttonTextStyle} from '@utils/buttonStyles';
+import {getTextPreviewType} from '@utils/document/preview';
 import {isDocument, isPdf} from '@utils/file';
 import {galleryItemToFileInfo} from '@utils/gallery';
 import {changeOpacity} from '@utils/theme';
@@ -77,21 +79,26 @@ const DocumentRenderer = ({canDownloadFiles, enableSecureFilePreview, item, hide
     const serverUrl = useServerUrl();
     const file = useMemo(() => galleryItemToFileInfo(item), [item]);
     const [enabled, setEnabled] = useState(true);
+    const [textPreviewOpen, setTextPreviewOpen] = useState(false);
+    const textPreviewType = getTextPreviewType(file);
     const isSupported = useMemo(() => isDocument(file), [file]);
     const canOpenFile = useMemo(() => {
         if (!isSupported) {
             return false;
+        }
+        if (textPreviewType) {
+            return canDownloadFiles;
         }
         if (enableSecureFilePreview && isPdf(file)) {
             return true;
         }
 
         return !enableSecureFilePreview && canDownloadFiles;
-    }, [canDownloadFiles, enableSecureFilePreview, file, isSupported]);
+    }, [canDownloadFiles, enableSecureFilePreview, file, isSupported, textPreviewType]);
 
     const optionText = useMemo(() => {
         const allowSaveToLocation = SecurityManager.canSaveToLocation(serverUrl, 'FilesApp');
-        if (enableSecureFilePreview && !isPdf(file)) {
+        if (enableSecureFilePreview && !isPdf(file) && !textPreviewType) {
             return formatMessage(messages.onlyPdf);
         } else if (!isSupported && allowSaveToLocation) {
             return formatMessage(messages.unsupported);
@@ -99,7 +106,7 @@ const DocumentRenderer = ({canDownloadFiles, enableSecureFilePreview, item, hide
             return formatMessage(messages.unsupportedAndBlockedDownload);
         }
         return formatMessage(messages.openFile);
-    }, [enableSecureFilePreview, file, formatMessage, isSupported, serverUrl]);
+    }, [enableSecureFilePreview, file, formatMessage, isSupported, serverUrl, textPreviewType]);
 
     const setGalleryAction = useCallback((action: GalleryAction) => {
         DeviceEventEmitter.emit(Events.GALLERY_ACTIONS, action);
@@ -109,8 +116,14 @@ const DocumentRenderer = ({canDownloadFiles, enableSecureFilePreview, item, hide
     }, []);
 
     const handleOpenFile = useCallback(() => {
+        if (textPreviewType) {
+            setTextPreviewOpen(true);
+            return;
+        }
         setEnabled(false);
-    }, []);
+    }, [textPreviewType]);
+
+    const closeTextPreview = useCallback(() => setTextPreviewOpen(false), []);
 
     const handlePdfPreview = useCallback(() => {
         if (enableSecureFilePreview && isPdf(file)) {
@@ -122,6 +135,12 @@ const DocumentRenderer = ({canDownloadFiles, enableSecureFilePreview, item, hide
 
     return (
         <>
+            {textPreviewOpen && (
+                <TextFilePreview
+                    file={file}
+                    onClose={closeTextPreview}
+                />
+            )}
             <Pressable onPress={handlePdfPreview}>
                 <Animated.View style={[styles.container, {width, height}]}>
                     <FileIcon

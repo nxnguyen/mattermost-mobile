@@ -16,6 +16,7 @@ import {fetchTermsOfService, updateTermsOfServiceStatus} from '@actions/remote/t
 import Button from '@components/button';
 import Loading from '@components/loading';
 import Markdown from '@components/markdown';
+import {APP_NAME} from '@constants/branding';
 import {Screens} from '@constants/index';
 import {useServerUrl} from '@context/server';
 import {useTheme} from '@context/theme';
@@ -91,7 +92,7 @@ const getStyleSheet = makeStyleSheetFromTheme((theme) => {
 });
 
 const TermsOfService = ({
-    siteName = 'Mattermost',
+    siteName = APP_NAME,
     showToS,
 }: TermsOfServiceProps) => {
     const theme = useTheme();
